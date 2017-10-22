@@ -49,23 +49,22 @@ public class Input {
 
     public String next() throws BrokenImage {
         fileName = fileList.getFirst().getAbsolutePath().split("GraphImages")[1];
-        dirName = fileList.getFirst().getAbsolutePath().split("GraphImages")[1].split("\\\\")[1];
+        dirName = fileList.getFirst().getAbsolutePath().split("GraphImages")[1].split("/")[1];
         fileOutPath = fileList.getFirst().getAbsolutePath()
                 .replace("GraphImages","GraphData")
-                .replace(".jpg",".txt");
-        String[] dirs = fileOutPath.split("\\\\" );
+                .replace(".jpg",".txt").replace(".jpeg",".txt");
+        String[] dirs = fileOutPath.split("/" );
         for(int i =1 ; i < dirs.length ; ++i){
             new File(fileOutPath.split( dirs[i] )[0]).mkdir();
         }
         // Исключение если имя файла не заканчивается на .jpg
         String str[] = fileList.getFirst().getName().split("\\.");
-        if(! str[str.length - 1].equals("jpg")) {
+        if( (!str[str.length - 1].equals("jpg")) && (!str[str.length - 1].equals("jpeg"))) {
             System.out.println("\"" + fileName + "\"");
             fileList.pollFirst();
-            throw new BrokenImage("Неправильный формат файла, используйте jpg");
+            throw new BrokenImage("Неправильный формат файла, используйте jpg/jpeg");
         }
-        //--- TODO: Вставь сюда замену пути fileName и fileOutPath и dirName
-        //----------
+
         return fileList.pollFirst().getAbsolutePath();
     }
 
